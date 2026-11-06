@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kalizdy Game | PS5 &amp; PC Gamer</title>
+  <meta name="description" content="Kalizdy Game: PS5 y PC Gamer en el Prado, La Paz. Reservá tu estación y sumá snacks.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Estructura: index.html + styles.css + script.js -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ================= TOP BAR HUD ================= -->
+  <div class="topbar">
+    <span class="topbar__status"><i class="status-dot" aria-hidden="true"></i> SISTEMA ONLINE</span>
+    <span class="topbar__place">LA PAZ · BOLIVIA</span>
+    <span class="topbar__clock" id="reloj">--:--:--</span>
+  </div>
+
+  <!-- ================= HEADER ================= -->
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="Kalizdy Game - Inicio">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 48 48" width="48" height="48" role="img">
+          <path d="M14 16h20c5 0 8.6 3.8 9.6 8.7l2 9.4c.9 4.2-3.4 7.2-6.6 4.2L34.4 33H13.6L9 38.3c-3.2 3-7.5 0-6.6-4.2l2-9.4C5.4 19.8 9 16 14 16Z" fill="#05070d"/>
+          <rect x="12.5" y="23" width="9" height="3" rx="1.5" fill="#00e5ff"/>
+          <rect x="15.5" y="20" width="3" height="9" rx="1.5" fill="#00e5ff"/>
+          <circle cx="34" cy="22.5" r="2.2" fill="#a855f7"/>
+          <circle cx="29.5" cy="27" r="2.2" fill="#a855f7"/>
+          <circle cx="34" cy="27" r="1.6" fill="#e6f1ff"/>
+        </svg>
+      </span>
+      <span class="brand__text">Kalizdy<span>Game</span> <small>Gaming Lounge</small></span>
+    </a>
+
+    <nav class="nav" aria-label="Navegación principal">
+      <a href="#consolas"><b>01</b> Consolas</a>
+      <a href="#snacks"><b>02</b> Snacks</a>
+      <a href="#galeria"><b>03</b> Galería</a>
+      <a href="#reservar"><b>04</b> Reservas</a>
+    </nav>
+
+    <div class="header-actions">
+      <button type="button" class="theme-toggle" id="themeToggle" aria-pressed="false">
+        <span class="theme-toggle__icon" aria-hidden="true">☀</span>
+        <span class="theme-toggle__label">Modo claro</span>
+      </button>
+      <a href="#reservar" class="btn btn--sm">Reservar</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ================= HERO ================= -->
+    <section class="hero" id="inicio">
+      <div class="hero__inner">
+
+        <div class="hero__copy">
+          <p class="eyebrow">Kalizdy Game <span>//</span> PS5 &amp; PC Gamer</p>
+          <h1>Subí de nivel<br><span class="grad">tu próxima partida</span></h1>
+          <p class="hero__lead">
+            PS5 y PC Gamer en el corazón del Prado. Elegí tu estación,
+            sumá snacks y reservá en segundos.
+          </p>
+
+          <div class="hero__actions">
+            <a href="#reservar" class="btn">Reservar estación <span aria-hidden="true">→</span></a>
+            <a href="#consolas" class="btn btn--ghost">Ver estaciones</a>
+          </div>
+
+          <ul class="hero__stats">
+            <li><strong>02</strong><span>Zonas</span></li>
+            <li><strong>05</strong><span>Estaciones</span></li>
+            <li><strong>+50</strong><span>Juegos</span></li>
+          </ul>
+        </div>
+
+        <div class="hero__art" aria-hidden="true">
+          <div class="hero__frame">
+            <img src="img/hero.jpg" alt="">
+            <span class="hud hud--tl">LIVE // PC GAMER</span>
+            <span class="hud hud--tr">LVL 99</span>
+            <span class="hud hud--bl">144 FPS</span>
+            <span class="hud hud--br">LA PAZ // BO</span>
+            <span class="hero__scan"></span>
+          </div>
+
+          <div class="hero__card hero__card--ps5">🎮 <span>PS5</span></div>
+          <div class="hero__card hero__card--pc">🖥 <span>PC Gamer</span></div>
+          <div class="hero__card hero__card--snacks">🍔 <span>Snacks</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= TICKER ================= -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <span>PS5</span><i>✦</i><span>PC GAMER</span><i>✦</i><span>TORNEOS</span><i>✦</i><span>SNACKS</span><i>✦</i><span>RESERVÁ TU ESTACIÓN</span><i>✦</i>
+        <span>PS5</span><i>✦</i><span>PC GAMER</span><i>✦</i><span>TORNEOS</span><i>✦</i><span>SNACKS</span><i>✦</i><span>RESERVÁ TU ESTACIÓN</span><i>✦</i>
+      </div>
+    </div>
+
+    <!-- ================= SELECTOR ================= -->
+    <section class="section" id="consolas">
+      <div class="section__head section__head--row">
+        <div>
+          <p class="eyebrow">01 <span>//</span> Selector</p>
+          <h2>Elegí tu <span class="grad">zona</span></h2>
+          <p class="section__lead">
+            Filtrá las estaciones y desplegá la ficha técnica de cada equipo.
+          </p>
+        </div>
+
+        <div class="zona-badge">
+          <span class="zona-badge__icon" id="zonaIcon">🎲</span>
+          <span class="zona-badge__text">
+            <small>Zona seleccionada</small>
+            <strong id="zonaLabel">Todas las estaciones</strong>
+          </span>
+        </div>
+      </div>
+
+      <div class="console-tabs" role="group" aria-label="Filtrar por tipo de consola">
+        <button type="button" class="btn-console is-active" data-cat="all" aria-pressed="true">Todo</button>
+        <button type="button" class="btn-console" data-cat="ps5" aria-pressed="false">PS5</button>
+        <button type="button" class="btn-console" data-cat="pc" aria-pressed="false">PC Gamer</button>
+      </div>
+
+      <div class="equipos-grid" id="equiposGrid">
+
+        <!-- PS5 -->
+        <article class="equipo-card" data-cat="ps5">
+          <div class="equipo-card__media">
+            <img src="img/ps5.jpg" alt="Jugadores con controles de PS5 frente a la pantalla" loading="lazy">
+            <span class="equipo-card__tag tag--ps5">PS5</span>
+            <span class="equipo-card__lvl">LVL 01</span>
+          </div>
+          <div class="equipo-card__body">
+            <h3>PS5 Pro · Sala A</h3>
+            <p>4K a 120 Hz, dos controles DualSense y sofá para dos jugadores.</p>
+            <div class="equipo-card__foot">
+              <span class="precio"><span class="precio__cur">Bs</span> 12 <small>/ hora</small></span>
+              <button type="button" class="btn-detalles" aria-expanded="false">Ficha <span class="btn-detalles__sign">+</span></button>
+            </div>
+            <div class="equipo-detalles">
+              <div class="spec-grid">
+                <div class="spec"><span>Resolución</span><strong>4K · 120 Hz</strong></div>
+                <div class="spec"><span>Controles</span><strong>2 DualSense</strong></div>
+                <div class="spec"><span>Pantalla</span><strong>55" LED</strong></div>
+                <div class="spec"><span>Incluye</span><strong>1 juego a elección</strong></div>
+              </div>
+              <p class="equipo-detalles__nota">Ideal para FIFA, Spider-Man y juegos de historia.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="equipo-card" data-cat="ps5">
+          <div class="equipo-card__media">
+            <img src="img/ps5-setup.jpg" alt="Consola PS5 y monitor con Warzone" loading="lazy">
+            <span class="equipo-card__tag tag--ps5">PS5</span>
+            <span class="equipo-card__lvl">LVL 02</span>
+          </div>
+          <div class="equipo-card__body">
+            <h3>PS5 Slim · Sala B</h3>
+            <p>Setup compacto para partidas rápidas con amigos.</p>
+            <div class="equipo-card__foot">
+              <span class="precio"><span class="precio__cur">Bs</span> 10 <small>/ hora</small></span>
+              <button type="button" class="btn-detalles" aria-expanded="false">Ficha <span class="btn-detalles__sign">+</span></button>
+            </div>
+            <div class="equipo-detalles">
+              <div class="spec-grid">
+                <div class="spec"><span>Resolución</span><strong>4K · 60 Hz</strong></div>
+                <div class="spec"><span>Controles</span><strong>2 DualSense</strong></div>
+                <div class="spec"><span>Pantalla</span><strong>43" LED</strong></div>
+                <div class="spec"><span>Incluye</span><strong>2 juegos de fiesta</strong></div>
+              </div>
+              <p class="equipo-detalles__nota">Perfecta para torneos de EA FC y Mortal Kombat.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- PC Gamer -->
+        <article class="equipo-card" data-cat="pc">
+          <div class="equipo-card__media">
+            <img src="img/pc.jpg" alt="Setup de PC Gamer con dos monitores y RGB" loading="lazy">
+            <span class="equipo-card__tag tag--pc">PC Gamer</span>
+            <span class="equipo-card__lvl">LVL 03</span>
+          </div>
+          <div class="equipo-card__body">
+            <h3>Estación Nova</h3>
+            <p>La entrada perfecta al competitivo: fluido y listo para ranked.</p>
+            <div class="equipo-card__foot">
+              <span class="precio"><span class="precio__cur">Bs</span> 8 <small>/ hora</small></span>
+              <button type="button" class="btn-detalles" aria-expanded="false">Ficha <span class="btn-detalles__sign">+</span></button>
+            </div>
+            <div class="equipo-detalles">
+              <div class="spec-grid">
+                <div class="spec"><span>Procesador</span><strong>Intel i5-13400F</strong></div>
+                <div class="spec"><span>Gráfica</span><strong>RTX 4060 8 GB</strong></div>
+                <div class="spec"><span>Memoria</span><strong>16 GB DDR5</strong></div>
+                <div class="spec"><span>Monitor</span><strong>24" · 165 Hz</strong></div>
+              </div>
+              <p class="equipo-detalles__nota">Incluye teclado mecánico, mouse 8K y headset.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="equipo-card" data-cat="pc">
+          <div class="equipo-card__media">
+            <img src="img/torneos.jpg" alt="Jugadores compitiendo en PCs en red" loading="lazy">
+            <span class="equipo-card__tag tag--pc">PC Gamer</span>
+            <span class="equipo-card__lvl">LVL 04</span>
+          </div>
+          <div class="equipo-card__body">
+            <h3>Estación Titan</h3>
+            <p>Potencia extra para shooters y battle royale sin perder fluidez.</p>
+            <div class="equipo-card__foot">
+              <span class="precio"><span class="precio__cur">Bs</span> 12 <small>/ hora</small></span>
+              <button type="button" class="btn-detalles" aria-expanded="false">Ficha <span class="btn-detalles__sign">+</span></button>
+            </div>
+            <div class="equipo-detalles">
+              <div class="spec-grid">
+                <div class="spec"><span>Procesador</span><strong>Intel i7-13700F</strong></div>
+                <div class="spec"><span>Gráfica</span><strong>RTX 4070 12 GB</strong></div>
+                <div class="spec"><span>Memoria</span><strong>32 GB DDR5</strong></div>
+                <div class="spec"><span>Monitor</span><strong>27" · 240 Hz</strong></div>
+              </div>
+              <p class="equipo-detalles__nota">Incluye teclado mecánico, mouse 8K y headset.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="equipo-card" data-cat="pc">
+          <div class="equipo-card__media">
+            <img src="img/hero.jpg" alt="Gamer con headset en una PC de alto rendimiento" loading="lazy">
+            <span class="equipo-card__tag tag--pc">PC Gamer</span>
+            <span class="equipo-card__lvl">LVL 05</span>
+          </div>
+          <div class="equipo-card__body">
+            <h3>Estación Pulse</h3>
+            <p>El setup de los que no aceptan ni un frame de lag.</p>
+            <div class="equipo-card__foot">
+              <span class="precio"><span class="precio__cur">Bs</span> 15 <small>/ hora</small></span>
+              <button type="button" class="btn-detalles" aria-expanded="false">Ficha <span class="btn-detalles__sign">+</span></button>
+            </div>
+            <div class="equipo-detalles">
+              <div class="spec-grid">
+                <div class="spec"><span>Procesador</span><strong>Intel i9-14900F</strong></div>
+                <div class="spec"><span>Gráfica</span><strong>RTX 4080 16 GB</strong></div>
+                <div class="spec"><span>Memoria</span><strong>32 GB DDR5</strong></div>
+                <div class="spec"><span>Monitor</span><strong>27" · 360 Hz</strong></div>
+              </div>
+              <p class="equipo-detalles__nota">Incluye teclado óptico, mouse 8K y headset premium.</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ================= SNACKS ================= -->
+    <section class="section section--snacks" id="snacks">
+      <div class="section__head section__head--row">
+        <div>
+          <p class="eyebrow">02 <span>//</span> Snack Bar</p>
+          <h2>Combo <span class="grad">Snacks</span></h2>
+          <p class="section__lead">
+            Sumá bebidas y combos a tu mesa. El contador se actualiza al instante.
+          </p>
+        </div>
+
+        <div class="snack-summary" aria-live="polite">
+          <span class="snack-summary__icon" aria-hidden="true">🛒</span>
+          <span class="snack-summary__items"><strong id="snackCount">0</strong> ítems</span>
+          <span class="snack-summary__total" id="snackTotal">Bs 0</span>
+        </div>
+      </div>
+
+      <div class="snacks-grid">
+
+        <article class="snack" data-id="combo-kalizdy" data-price="20">
+          <span class="snack__icon" aria-hidden="true">🍔</span>
+          <div class="snack__info">
+            <h3>Combo Kalizdy</h3>
+            <p>Hamburguesa, papas y refresco</p>
+          </div>
+          <span class="snack__price">Bs 20</span>
+          <div class="snack__controls">
+            <button type="button" class="qty-btn" data-action="minus" aria-label="Quitar Combo Kalizdy">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" class="qty-btn qty-btn--plus" data-action="plus" aria-label="Agregar Combo Kalizdy">+</button>
+          </div>
+        </article>
+
+        <article class="snack" data-id="nachos" data-price="12">
+          <span class="snack__icon" aria-hidden="true">🧀</span>
+          <div class="snack__info">
+            <h3>Nachos Kalizdy</h3>
+            <p>Queso, jalapeños y guacamole</p>
+          </div>
+          <span class="snack__price">Bs 12</span>
+          <div class="snack__controls">
+            <button type="button" class="qty-btn" data-action="minus" aria-label="Quitar Nachos Kalizdy">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" class="qty-btn qty-btn--plus" data-action="plus" aria-label="Agregar Nachos Kalizdy">+</button>
+          </div>
+        </article>
+
+        <article class="snack" data-id="alitas" data-price="15">
+          <span class="snack__icon" aria-hidden="true">🍗</span>
+          <div class="snack__info">
+            <h3>Alitas x6</h3>
+            <p>BBQ o picantes, con dip</p>
+          </div>
+          <span class="snack__price">Bs 15</span>
+          <div class="snack__controls">
+            <button type="button" class="qty-btn" data-action="minus" aria-label="Quitar Alitas">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" class="qty-btn qty-btn--plus" data-action="plus" aria-label="Agregar Alitas">+</button>
+          </div>
+        </article>
+
+        <article class="snack" data-id="refresco" data-price="5">
+          <span class="snack__icon" aria-hidden="true">🥤</span>
+          <div class="snack__info">
+            <h3>Refresco</h3>
+            <p>Vaso grande con hielo</p>
+          </div>
+          <span class="snack__price">Bs 5</span>
+          <div class="snack__controls">
+            <button type="button" class="qty-btn" data-action="minus" aria-label="Quitar Refresco">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" class="qty-btn qty-btn--plus" data-action="plus" aria-label="Agregar Refresco">+</button>
+          </div>
+        </article>
+
+        <article class="snack" data-id="cafe" data-price="3">
+          <span class="snack__icon" aria-hidden="true">☕</span>
+          <div class="snack__info">
+            <h3>Café</h3>
+            <p>Caliente o frío, para la madrugada</p>
+          </div>
+          <span class="snack__price">Bs 3</span>
+          <div class="snack__controls">
+            <button type="button" class="qty-btn" data-action="minus" aria-label="Quitar Café">−</button>
+            <span class="qty" data-qty>0</span>
+            <button type="button" class="qty-btn qty-btn--plus" data-action="plus" aria-label="Agregar Café">+</button>
+          </div>
+        </article>
+
+      </div>
+
+      <p class="snacks-note">El total de snacks se paga al momento de la reserva.</p>
+    </section>
+
+    <!-- ================= CARRUSEL ================= -->
+    <section class="section section--galeria" id="galeria">
+      <div class="section__head section__head--row">
+        <div>
+          <p class="eyebrow">03 <span>//</span> Galería</p>
+          <h2>Conocé <span class="grad">Kalizdy Game</span></h2>
+          <p class="section__lead">
+            Zonas cómodas, equipos listos y snacks a un paso de tu estación.
+          </p>
+        </div>
+
+        <div class="carrusel__meta" aria-live="polite">
+          <span id="slideActual">01</span> <i>/</i> <span id="slideTotal">05</span>
+        </div>
+      </div>
+
+      <div class="carrusel" id="carrusel">
+        <div class="carrusel__viewport">
+
+          <article class="slide is-active">
+            <img src="img/ps5.jpg" alt="Zona PS5 con dos jugadores y controles DualSense">
+            <span class="slide__scan"></span>
+            <div class="slide__caption">
+              <span class="slide__index">01</span>
+              <h3>Zona PS5</h3>
+              <p>Dos controles, pantalla grande y tu FIFA de siempre.</p>
+            </div>
+          </article>
+
+          <article class="slide">
+            <img src="img/ps5-setup.jpg" alt="Consola PS5 con monitor y Warzone">
+            <span class="slide__scan"></span>
+            <div class="slide__caption">
+              <span class="slide__index">02</span>
+              <h3>Setup PS5</h3>
+              <p>Warzone, 4K y sillón para la escuadra completa.</p>
+            </div>
+          </article>
+
+          <article class="slide">
+            <img src="img/pc.jpg" alt="Setup de PC Gamer con dos monitores y luces RGB">
+            <span class="slide__scan"></span>
+            <div class="slide__caption">
+              <span class="slide__index">03</span>
+              <h3>PC Gamer</h3>
+              <p>Monitores de 240 Hz, teclado mecánico y RGB.</p>
+            </div>
+          </article>
+
+          <article class="slide">
+            <img src="img/torneos.jpg" alt="Jugadores compitiendo en una LAN">
+            <span class="slide__scan"></span>
+            <div class="slide__caption">
+              <span class="slide__index">04</span>
+              <h3>Torneos</h3>
+              <p>Noches de LAN y competencia en pleno Prado.</p>
+            </div>
+          </article>
+
+          <article class="slide">
+            <img src="img/snacks.jpg" alt="Hamburguesas y refrescos del snack bar">
+            <span class="slide__scan"></span>
+            <div class="slide__caption">
+              <span class="slide__index">05</span>
+              <h3>Snack Bar</h3>
+              <p>Combos, bebidas y energía para la madrugada.</p>
+            </div>
+          </article>
+
+        </div>
+
+        <button type="button" class="carrusel__btn carrusel__btn--prev" id="prevSlide" aria-label="Imagen anterior">‹</button>
+        <button type="button" class="carrusel__btn carrusel__btn--next" id="nextSlide" aria-label="Imagen siguiente">›</button>
+
+        <div class="carrusel__footer">
+          <div class="carrusel__dots" id="carruselDots"></div>
+          <div class="carrusel__progress"><span id="carruselProgress"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= RESERVA ================= -->
+    <section class="section" id="reservar">
+      <div class="reserva">
+
+        <div class="reserva__info">
+          <p class="eyebrow">04 <span>//</span> Reserva</p>
+          <h2>Asegurá tu <span class="grad">lugar</span></h2>
+          <p>
+            Elegí consola, fecha y hora. Te confirmamos la reserva al instante
+            y te esperamos con el setup listo.
+          </p>
+
+          <ul class="reserva__list">
+            <li><span aria-hidden="true">▸</span> Confirmación inmediata</li>
+            <li><span aria-hidden="true">▸</span> Cambios gratis hasta 2 horas antes</li>
+            <li><span aria-hidden="true">▸</span> Snacks y bebidas en el local</li>
+          </ul>
+
+          <div class="reserva__hours">
+            <span>Horario</span>
+            <strong>Lun a Dom · 14:00 – 23:00</strong>
+          </div>
+
+          <a class="btn btn--ghost reserva__wa" href="https://wa.me/59175867586" target="_blank" rel="noopener">
+            WhatsApp 75867586
+          </a>
+
+          <div class="resumen" id="resumenReserva" aria-live="polite">
+            <p class="resumen__title"><i class="status-dot" aria-hidden="true"></i> Resumen en vivo</p>
+            <ul class="resumen__list">
+              <li><span>Estación</span><strong id="resumenEstacion">—</strong></li>
+              <li><span>Fecha</span><strong id="resumenFecha">—</strong></li>
+              <li><span>Hora</span><strong id="resumenHora">—</strong></li>
+              <li><span>Personas</span><strong id="resumenPersonas">—</strong></li>
+              <li><span>Snacks</span><strong id="resumenSnacks">Ninguno</strong></li>
+              <li><span>Total snacks</span><strong id="resumenTotal">Bs 0</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <form class="reserva__form" id="reservaForm" novalidate>
+          <div class="field">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" placeholder="Tu nombre" autocomplete="name" maxlength="40" required>
+            <span class="field-error" data-error-for="nombre"></span>
+          </div>
+
+          <div class="field">
+            <label for="celular">Celular / WhatsApp</label>
+            <input type="tel" id="celular" name="celular" placeholder="Ej. 75867586" inputmode="numeric" pattern="[0-9]*" maxlength="11" autocomplete="tel" required>
+            <span class="field-hint">Solo números · 8 dígitos (o 591 + 8 dígitos).</span>
+            <span class="field-error" data-error-for="celular"></span>
+          </div>
+
+          <div class="field">
+            <label for="estacion">Estación</label>
+            <select id="estacion" name="estacion" required>
+              <option value="">Elegí una estación</option>
+              <optgroup label="PS5">
+                <option value="PS5 Pro · Sala A">PS5 Pro · Sala A</option>
+                <option value="PS5 Slim · Sala B">PS5 Slim · Sala B</option>
+              </optgroup>
+              <optgroup label="PC Gamer">
+                <option value="Estación Nova">Estación Nova</option>
+                <option value="Estación Titan">Estación Titan</option>
+                <option value="Estación Pulse">Estación Pulse</option>
+              </optgroup>
+            </select>
+            <span class="field-error" data-error-for="estacion"></span>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label for="fecha">Fecha</label>
+              <input type="date" id="fecha" name="fecha" required>
+              <span class="field-error" data-error-for="fecha"></span>
+            </div>
+            <div class="field">
+              <label for="hora">Hora</label>
+              <select id="hora" name="hora" required>
+                <option value="">Elegí</option>
+                <option value="14:00">14:00</option>
+                <option value="15:00">15:00</option>
+                <option value="16:00">16:00</option>
+                <option value="17:00">17:00</option>
+                <option value="18:00">18:00</option>
+                <option value="19:00">19:00</option>
+                <option value="20:00">20:00</option>
+                <option value="21:00">21:00</option>
+                <option value="22:00">22:00</option>
+              </select>
+              <span class="field-error" data-error-for="hora"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="personas">Personas</label>
+            <select id="personas" name="personas">
+              <option value="1">1 persona</option>
+              <option value="2">2 personas</option>
+              <option value="3">3 personas</option>
+              <option value="4">4 personas</option>
+              <option value="5">5 personas</option>
+              <option value="6">6 personas</option>
+            </select>
+            <span class="field-error" data-error-for="personas"></span>
+          </div>
+
+          <div class="reserva__actions">
+            <button type="submit" class="btn btn--block">Confirmar reserva</button>
+            <button type="reset" class="btn btn--ghost" id="reservaReset">Limpiar</button>
+          </div>
+
+          <p class="form-error" id="formError" role="alert"></p>
+          <div class="reserva__ok" id="reservaOk" role="status"></div>
+        </form>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="site-footer">
+    <p><strong>Kalizdy Game</strong> · PS5 &amp; PC Gamer · La Paz, Bolivia</p>
+    <p>Av. 16 de Julio (Prado) · WhatsApp <a href="https://wa.me/59175867586" target="_blank" rel="noopener">75867586</a></p>
+    <p class="site-footer__small">© 2026 Kalizdy Game · Fotos: Unsplash · Proyecto académico Diseño Web II · UPDS</p>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
