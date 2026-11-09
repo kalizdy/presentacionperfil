@@ -31,13 +31,95 @@ $(function () {
      ======================================================= */
   $('#themeToggle').on('click', function () {
     var $body = $('body');
-    $body.toggleClass('theme-light');
-
     var isLight = $body.hasClass('theme-light');
+
+    if (isLight) {
+      $body.removeClass('theme-light');
+    } else {
+      $body.addClass('theme-light');
+    }
+
     $(this)
-      .attr('aria-pressed', isLight ? 'true' : 'false')
-      .find('.theme-toggle__icon').text(isLight ? '🌙' : '☀').end()
-      .find('.theme-toggle__label').text(isLight ? 'Modo oscuro' : 'Modo claro');
+      .attr('aria-pressed', isLight ? 'false' : 'true')
+      .find('.theme-toggle__icon').html(isLight ? '☀' : '🌙').end()
+      .find('.theme-toggle__label').html(isLight ? 'Modo claro' : 'Modo oscuro');
+  });
+
+  /* =======================================================
+     1.5) NAVEGACIÓN DEL LOBBY (PANELES)
+     ======================================================= */
+  var panelActual = null;
+
+  function abrirPanel(nombre) {
+    if (!nombre || nombre === 'inicio') {
+      cerrarPaneles();
+      return;
+    }
+
+    var $panel = $('#panel-' + nombre);
+    if (!$panel.length) return;
+
+    panelActual = nombre;
+
+    $('.panel').removeClass('is-open').attr('aria-hidden', 'true');
+    $panel.addClass('is-open').attr('aria-hidden', 'false');
+
+    $('#panelLayer')
+      .attr('aria-hidden', 'false')
+      .stop(true, true)
+      .css({ display: 'flex', opacity: 0 })
+      .animate({ opacity: 1 }, 180);
+
+    $('body').addClass('panel-open');
+
+    $('.rail-btn').removeClass('is-active').attr('aria-pressed', 'false');
+    $('.rail-btn[data-panel="' + nombre + '"]')
+      .addClass('is-active')
+      .attr('aria-pressed', 'true');
+
+    if (nombre === 'galeria') {
+      reiniciarAutoplay();
+    }
+
+    setTimeout(function () {
+      $panel.find('.panel__close').trigger('focus');
+    }, 200);
+  }
+
+  function cerrarPaneles() {
+    panelActual = null;
+
+    $('.panel').removeClass('is-open').attr('aria-hidden', 'true');
+    $('#panelLayer')
+      .stop(true, true)
+      .animate({ opacity: 0 }, 150, function () {
+        $(this).css('display', 'none').attr('aria-hidden', 'true');
+      });
+
+    $('body').removeClass('panel-open');
+    $('.rail-btn').removeClass('is-active').attr('aria-pressed', 'false');
+    $('.rail-btn[data-panel="inicio"]')
+      .addClass('is-active')
+      .attr('aria-pressed', 'true');
+
+    detenerAutoplay();
+  }
+
+  $(document).on('click', '[data-open-panel]', function () {
+    abrirPanel($(this).data('open-panel'));
+  });
+
+  $(document).on('click', '[data-close-panel]', function () {
+    cerrarPaneles();
+  });
+
+  $('.rail-btn').on('click', function () {
+    abrirPanel($(this).data('panel'));
+  });
+
+  $('#brandHome').on('click', function (event) {
+    event.preventDefault();
+    cerrarPaneles();
   });
 
   /* =======================================================
@@ -96,11 +178,36 @@ $(function () {
     $btn.find('.btn-detalles__sign').text(isOpen ? '+' : '−');
   });
 
+  /* Acordeón de preguntas frecuentes */
+  $('.faq-q').on('click', function () {
+    var $btn = $(this);
+    var $item = $btn.closest('.faq-item');
+    var isOpen = $item.hasClass('is-open');
+
+    $('.faq-item').not($item).removeClass('is-open');
+    $('.faq-item').not($item).find('.faq-a').slideUp('slow');
+    $('.faq-item').not($item).find('.faq-q').attr('aria-expanded', 'false');
+    $('.faq-item').not($item).find('.faq-q__sign').text('+');
+
+    $item.toggleClass('is-open');
+    $item.find('.faq-a').slideToggle('slow');
+    $btn.attr('aria-expanded', isOpen ? 'false' : 'true');
+    $btn.find('.faq-q__sign').text(isOpen ? '+' : '−');
+  });
+
   /* =======================================================
      4) SNACKS + RESUMEN EN VIVO
      ======================================================= */
   var snackState = {};
   var bumpTimer = null;
+
+  var precios = {
+    'PS5 Pro · Sala A': 12,
+    'PS5 Slim · Sala B': 10,
+    'Estación Nova': 8,
+    'Estación Titan': 12,
+    'Estación Pulse': 15
+  };
 
   $('.snack').each(function () {
     snackState[$(this).data('id')] = 0;
@@ -199,26 +306,147 @@ $(function () {
     .attr('min', fechaISO(hoy))
     .attr('max', fechaISO(fechaMaxima));
 
+  function getTotales() {
+    var estacion = $('#estacion').val() || '';
+    var precio = precios[estacion] || 0;
+    var horas = parseInt($('#horas').val(), 10);
+
+    if (isNaN(horas) || horas < 0) horas = 0;
+
+    var subtotalEstacion = precio * horas;
+    var snacks = getSelectedSnacks();
+
+    return {
+      estacion: estacion,
+      precio: precio,
+      horas: horas,
+      subtotalEstacion: subtotalEstacion,
+      snacks: snacks.items,
+      totalSnacks: snacks.total,
+      total: subtotalEstacion + snacks.total
+    };
+  }
+
+  function textoHoras(horas) {
+    if (!horas) return '—';
+    return horas + (horas === 1 ? ' hora' : ' horas');
+  }
+
+  function pintarListaSnacks($contenedor, items, claseVacia, textoVacio) {
+    $contenedor.empty();
+
+    if (!items.length) {
+      $('<li>').addClass(claseVacia).text(textoVacio).appendTo($contenedor);
+      return;
+    }
+
+    $.each(items, function (_, item) {
+      $('<li>')
+        .append($('<span>').text(item.qty + '× ' + item.name))
+        .append($('<b>').text('Bs ' + item.subtotal))
+        .appendTo($contenedor);
+    });
+  }
+
   function updateResumen() {
-    $('#resumenEstacion').text($('#estacion').val() || '—');
+    var datos = getTotales();
+    var personas = $('#personas').val();
+
+    $('#resumenEstacion').text(datos.estacion || '—');
     $('#resumenFecha').text(formatFecha($('#fecha').val()));
     $('#resumenHora').text($('#hora').val() || '—');
-
-    var personas = $('#personas').val();
     $('#resumenPersonas').text(
       personas ? personas + (personas === '1' ? ' persona' : ' personas') : '—'
     );
+    $('#resumenHoras').text(textoHoras(datos.horas));
+    $('#resumenPrecio').text('Bs ' + datos.precio);
+    $('#resumenSubtotalEstacion').text('Bs ' + datos.subtotalEstacion);
+    $('#resumenTotalSnacks').text('Bs ' + datos.totalSnacks);
+    $('#resumenTotalGeneral').text('Bs ' + datos.total);
+    $('#precioHoraVista').text('Bs ' + datos.precio + ' / hora');
 
-    var snacks = getSelectedSnacks();
-    var textoSnacks = snacks.items.length
-      ? $.map(snacks.items, function (item) { return item.qty + '× ' + item.name; }).join(', ')
-      : 'Ninguno';
+    pintarListaSnacks(
+      $('#resumenSnacksLista'),
+      datos.snacks,
+      'pedido__empty',
+      'Sin snacks seleccionados.'
+    );
 
-    $('#resumenSnacks').text(textoSnacks);
-    $('#resumenTotal').text('Bs ' + snacks.total).addClass('is-accent');
+    pintarListaSnacks(
+      $('#pedidoSnacksLista'),
+      datos.snacks,
+      'pedido-lateral__empty',
+      'Todavía no elegiste snacks.'
+    );
+
+    $('#pedidoSnacksTotal').text('Bs ' + datos.totalSnacks);
+
+    /* Panel lateral del lobby */
+    var totalItems = 0;
+    $.each(datos.snacks, function (_, item) {
+      totalItems += item.qty;
+    });
+
+    $('#sideEstacion').text(datos.estacion || 'Sin elegir');
+    $('#sideHoras').text(textoHoras(datos.horas));
+    $('#sideSnacks').text(totalItems + (totalItems === 1 ? ' ítem' : ' ítems'));
+    $('#sideTotal').text('Bs ' + datos.total);
+
+    $('#railSnackCount')
+      .text(totalItems)
+      .toggleClass('is-on', totalItems > 0);
   }
 
   updateSnacks();
+
+  /* Horas: botones + / − y límite 1–6 */
+  function ajustarHoras(delta) {
+    var actual = parseInt($('#horas').val(), 10);
+    if (isNaN(actual)) actual = 1;
+
+    var nuevo = Math.min(6, Math.max(1, actual + delta));
+    $('#horas').val(nuevo).trigger('change');
+  }
+
+  $('#horasMenos').on('click', function () {
+    ajustarHoras(-1);
+  });
+
+  $('#horasMas').on('click', function () {
+    ajustarHoras(1);
+  });
+
+  $('#horas').on('input', function () {
+    var valor = parseInt(this.value, 10);
+    if (!isNaN(valor) && valor > 6) {
+      this.value = 6;
+    }
+  });
+
+  /* Botón "Alquilar hora" de cada tarjeta */
+  $('.btn-alquilar').on('click', function () {
+    var estacion = $(this).data('estacion');
+    var precio = Number($(this).data('precio')) || 0;
+
+    $('#estacion').val(estacion).trigger('change');
+    $('#horas').val(1).trigger('change');
+
+    updateResumen();
+
+    mostrarToast(
+      '<strong>Estación seleccionada</strong>' +
+      estacion + ' · Bs ' + precio + ' / hora',
+      'ok'
+    );
+
+    abrirPanel('reserva');
+
+    if (window.innerWidth > 900) {
+      setTimeout(function () {
+        $('#nombre').trigger('focus');
+      }, 420);
+    }
+  });
 
   /* =======================================================
      6) VALIDACIÓN COMPLETA DEL FORMULARIO
@@ -241,6 +469,13 @@ $(function () {
     },
     estacion: function (valor) {
       return valor ? '' : 'Elegí una estación.';
+    },
+    horas: function (valor) {
+      var numero = parseInt(valor, 10);
+      if (!valor) return 'Indicá cuántas horas querés reservar.';
+      if (isNaN(numero) || numero < 1 || numero > 6) return 'Elegí entre 1 y 6 horas.';
+      if (String(numero) !== String(valor).trim()) return 'Usá un número entero de horas.';
+      return '';
     },
     fecha: function (valor) {
       if (!valor) return 'Elegí una fecha.';
@@ -326,89 +561,132 @@ $(function () {
     }
   });
 
-  function buildConfirmacion(data, snacks) {
-    var $ok = $('#reservaOk').empty();
+  /* =======================================================
+     TOAST FLOTANTE
+     ======================================================= */
+  var toastTimer = null;
 
-    $('<p>').addClass('ok-title').text('// Reserva confirmada').appendTo($ok);
+  function mostrarToast(mensaje, tipo) {
+    var $toast = $('#toast');
 
-    var $lista = $('<ul>').addClass('ok-list');
-    var filas = [
-      ['Nombre', data.nombre],
-      ['Celular', data.celular],
-      ['Estación', data.estacion],
-      ['Fecha', formatFecha(data.fecha)],
-      ['Hora', data.hora],
-      ['Personas', data.personas]
-    ];
+    clearTimeout(toastTimer);
+    $toast
+      .stop(true, true)
+      .removeClass('toast--ok toast--error')
+      .addClass(tipo === 'error' ? 'toast--error' : 'toast--ok')
+      .html(mensaje)
+      .slideDown(250);
 
-    $.each(filas, function (_, fila) {
-      $('<li>')
-        .append($('<span>').text(fila[0]))
-        .append($('<strong>').text(fila[1]))
-        .appendTo($lista);
-    });
+    toastTimer = setTimeout(function () {
+      $toast.fadeOut(300);
+    }, 3000);
+  }
 
-    $lista.appendTo($ok);
+  /* =======================================================
+     MODAL + CONTADOR DE 30 SEGUNDOS
+     ======================================================= */
+  var cuentaTimer = null;
+  var segundosRestantes = 30;
 
-    if (snacks.items.length) {
-      $('<p>').addClass('ok-title').css('margin-top', '12px').text('// Snacks').appendTo($ok);
+  function actualizarCuenta() {
+    var segundos = Math.max(segundosRestantes, 0);
 
-      var $snacks = $('<ul>').addClass('ok-snacks');
-      $.each(snacks.items, function (_, item) {
+    $('#modalTimer').text('00:' + (segundos < 10 ? '0' : '') + segundos);
+    $('#modalProgress').css('width', ((segundos / 30) * 100) + '%');
+    $('#modalTimerBox').toggleClass('is-urgent', segundos <= 10);
+  }
+
+  function detenerCuenta() {
+    if (cuentaTimer) {
+      clearInterval(cuentaTimer);
+      cuentaTimer = null;
+    }
+  }
+
+  function iniciarCuenta() {
+    detenerCuenta();
+    segundosRestantes = 30;
+    actualizarCuenta();
+
+    cuentaTimer = setInterval(function () {
+      segundosRestantes--;
+      actualizarCuenta();
+
+      if (segundosRestantes <= 0) {
+        detenerCuenta();
+        cerrarModal();
+        mostrarToast(
+          '<strong>Tarifa Flash Expirada</strong>' +
+          'El tiempo para confirmar terminó. Volvé a intentarlo.',
+          'error'
+        );
+      }
+    }, 1000);
+  }
+
+  function abrirModal() {
+    var datos = getTotales();
+
+    $('#modalEstacion').text(datos.estacion || '—');
+    $('#modalHoras').text(textoHoras(datos.horas));
+    $('#modalPrecio').text('Bs ' + datos.precio + ' / hora');
+    $('#modalSubtotal').text('Bs ' + datos.subtotalEstacion);
+    $('#modalTotalSnacks').text('Bs ' + datos.totalSnacks);
+    $('#modalTotal').text('Bs ' + datos.total);
+
+    var $lista = $('#modalSnacksLista').empty();
+
+    if (datos.snacks.length) {
+      $.each(datos.snacks, function (_, item) {
         $('<li>')
           .append($('<span>').text(item.qty + '× ' + item.name))
           .append($('<b>').text('Bs ' + item.subtotal))
-          .appendTo($snacks);
+          .appendTo($lista);
       });
-      $snacks.appendTo($ok);
-
-      $('<p>').addClass('ok-total')
-        .append($('<span>').text('Total snacks'))
-        .append($('<strong>').text('Bs ' + snacks.total))
-        .appendTo($ok);
+    } else {
+      $('<li>')
+        .addClass('modal__snacks-empty')
+        .text('Sin snacks seleccionados.')
+        .appendTo($lista);
     }
 
-    $('<p>').addClass('ok-note')
-      .text('Revisá los datos y enviá la reserva por WhatsApp para confirmarla.')
-      .appendTo($ok);
-
-    var lineas = [
-      'Hola Kalizdy Game, quiero confirmar esta reserva:',
-      'Nombre: ' + data.nombre,
-      'Celular: ' + data.celular,
-      'Estación: ' + data.estacion,
-      'Fecha: ' + formatFecha(data.fecha),
-      'Hora: ' + data.hora,
-      'Personas: ' + data.personas
-    ];
-
-    if (snacks.items.length) {
-      lineas.push('Snacks:');
-      $.each(snacks.items, function (_, item) {
-        lineas.push('- ' + item.qty + 'x ' + item.name + ' (Bs ' + item.subtotal + ')');
-      });
-      lineas.push('Total snacks: Bs ' + snacks.total);
-    }
-
-    var url = 'https://wa.me/59175867586?text=' + encodeURIComponent(lineas.join('\n'));
-
-    $('<a>')
-      .addClass('btn btn--block ok-wa')
-      .attr({ href: url, target: '_blank', rel: 'noopener' })
-      .text('Enviar reserva por WhatsApp')
-      .appendTo($ok);
-
-    $ok.slideDown('slow', function () {
-      $('html, body').stop(true).animate({
-        scrollTop: Math.max($ok.offset().top - 130, 0)
-      }, 300);
-    });
+    $('#modalReserva').fadeIn(200).attr('aria-hidden', 'false');
+    $('body').addClass('modal-open');
+    $('#modalConfirmar').trigger('focus');
+    iniciarCuenta();
   }
+
+  function cerrarModal() {
+    detenerCuenta();
+    $('#modalReserva').fadeOut(200).attr('aria-hidden', 'true');
+    $('body').removeClass('modal-open');
+  }
+
+  $('#modalCerrar, #modalCancelar').on('click', cerrarModal);
+  $('#modalBackdrop').on('click', cerrarModal);
+
+  $(document).on('keydown', function (event) {
+    if (event.key !== 'Escape') return;
+
+    if ($('#modalReserva').is(':visible')) {
+      cerrarModal();
+    } else if (panelActual) {
+      cerrarPaneles();
+    }
+  });
+
+  $('#modalConfirmar').on('click', function () {
+    var total = $('#modalTotal').text();
+    cerrarModal();
+    mostrarToast(
+      '<strong>Reserva confirmada</strong>' +
+      'Total: ' + total + ' · ¡Te esperamos en Kalizdy Game!',
+      'ok'
+    );
+  });
 
   $('#reservaForm').on('submit', function (event) {
     event.preventDefault();
-
-    $('#reservaOk').slideUp(150);
 
     var invalidos = validarFormulario();
 
@@ -420,25 +698,20 @@ $(function () {
         .fadeIn(150);
 
       var $primero = $('#' + invalidos[0]);
-      $('html, body').stop(true).animate({
-        scrollTop: Math.max($primero.offset().top - 130, 0)
-      }, 300);
+      var $panelBody = $primero.closest('.panel__body');
+
+      if ($panelBody.length) {
+        var destino = $primero.offset().top - $panelBody.offset().top + $panelBody.scrollTop() - 80;
+        $panelBody.stop(true).animate({ scrollTop: Math.max(destino, 0) }, 300);
+      }
+
       $primero.trigger('focus');
       return;
     }
 
     $('#formError').hide().text('');
-
-    var data = {
-      nombre: valorCampo('nombre'),
-      celular: valorCampo('celular').replace(/[\s.-]/g, ''),
-      estacion: valorCampo('estacion'),
-      fecha: valorCampo('fecha'),
-      hora: valorCampo('hora'),
-      personas: valorCampo('personas')
-    };
-
-    buildConfirmacion(data, getSelectedSnacks());
+    updateResumen();
+    abrirModal();
   });
 
   $('#reservaForm').on('input change', 'input, select', function () {
@@ -466,7 +739,7 @@ $(function () {
       });
 
       $('#formError').hide().text('');
-      $('#reservaOk').slideUp(150).empty();
+      $('#horas').val(1);
 
       $.each(snackState, function (id) {
         snackState[id] = 0;
@@ -547,7 +820,7 @@ $(function () {
   }
 
   function iniciarAutoplay() {
-    if (reduceMotion) return;
+    if (reduceMotion || panelActual !== 'galeria') return;
     detenerAutoplay();
     autoplay = setInterval(function () {
       irASlide(slideActual + 1);
